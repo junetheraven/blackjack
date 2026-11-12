@@ -7,4 +7,4 @@ def criarBaralho():
     baralho = [(v, n) for v in valores for n in naipes]
     random.shuffle(baralho)
     return baralho
-# print(criarBaralho())
+print(criarBaralho())
