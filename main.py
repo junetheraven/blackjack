@@ -1,8 +1,19 @@
 import random
 from estruturas import Queue
+import cartas
 
 valores = {'A': 11, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10, 'J': 10, 'Q': 10, 'K': 10}
-naipes = ['♠', '♥', '♦', '♣']
+naipes = {'♠': 'e', '♥': 'c', '♦': 'o', '♣': 'p' }
+
+def desenharCartas(carta):
+    v, n = carta
+    num = '1' if v == 'A' else v.lower()
+    funcao = getattr(cartas, f'c{num}{naipes[n]}')
+    return [l.rstrip().ljust(15) for l in funcao().split('\n') if l.strip()]
+
+def desenharMao(mao):
+    desenhos = [desenharCartas(c) for c in mao]
+    return '\n'.join(' '.join(d[i] for d in desenhos) for i in range(len(desenhos[0])))
 
 def criarBaralho():
     baralho = [(v, n) for v in valores for n in naipes]
@@ -22,24 +33,30 @@ def sacar(baralho, cartasUsadas):
     cartasUsadas.add(carta)
     return carta
 
-def mostrar(mao):
-    return ' '.join(f'{v}{n}' for v, n in mao)
-
 def turnoJogador(baralho, mao, usadas):
     while pontuar(mao) < 21:
         print('=' * 100)
-        print(f'Sua mão: {mostrar(mao)} ({pontuar(mao)})')
-        if input('[p] pedir   [s] parar   ').strip().lower() == 'p':
+        print(f'Sua mão ({pontuar(mao)}):')
+        print(desenharMao(mao))
+        
+        opcao = input('[p] pedir   [s] parar   ').strip().lower()
+        
+        if opcao == 'p':
             mao.append(sacar(baralho, usadas))
-        else:
+        elif opcao == 's':
             break
-    print(f'Mão final: {mostrar(mao)} ({pontuar(mao)})')
+        else:
+            print('Opção inválida')
+            
+    print(f'Mão final ({pontuar(mao)}):')
+    print(desenharMao(mao))
     print('=' * 100)
         
 def turnoDealer(baralho, mao, usadas):
-    while pontuar(mao) < 21:
+    while pontuar(mao) < 17:
         mao.append(sacar(baralho, usadas))
-    print(f'Mão do dealer: {mostrar(mao)} ({pontuar(mao)})')
+    print(f'Mão do dealer ({pontuar(mao)}):')
+    print(desenharMao(mao))
     
 def definirGanhador(j, d):
     if j > 21:
@@ -84,4 +101,4 @@ def main():
             print('Até logo ^^/')
             break
         
-print(main())    
+main() 
