@@ -89,7 +89,7 @@ def main():
             vez = fila.dequeue()
             if vez == 'Jogador':
                 turnoJogador(baralho, maos['Jogador'], usadas)
-                print(f'Sua pontuação: {pontuar(maos['Jogador'])}')
+                print(f"Sua pontuação: {pontuar(maos['Jogador'])}")
             else:
                 if pontuar(maos['Jogador']) <= 21:
                     turnoDealer(baralho, maos['Dealer'], usadas)
@@ -101,4 +101,4 @@ def main():
             print('Até logo ^^/')
             break
         
-main() 
+main()
