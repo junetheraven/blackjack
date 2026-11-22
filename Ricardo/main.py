@@ -1,5 +1,10 @@
 import random
+import sys
 from fila import Queue
+
+from pathlib import Path # Função para importar arquivos de outros diretórios
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent)) # Caminho da pasta principal do projeto
+from logos import logo_roleta
 
 
 # Tuplas de valores da roleta
@@ -20,7 +25,7 @@ def cor_do_numero(numero: int) -> str:
 def jogar_roleta():
     saldo = 100.0
     historico = Queue() # Fila para armazenar os últimos números sorteados
-    print("=== Roleta de Cassino em Python ===")
+    logo_roleta() 
 
     while saldo > 0:
         print(f"\nSaldo atual: R$ {saldo:.2f}")

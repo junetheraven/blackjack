@@ -1,9 +1,16 @@
 import random
+import sys
 from estruturas import Queue
 import cartas
 
+from pathlib import Path # Função para importar arquivos de outros diretórios
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent)) # Caminho da pasta principal do projeto
+from logos import logo_21
+
 valores = {'A': 11, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10, 'J': 10, 'Q': 10, 'K': 10}
 naipes = {'♠': 'e', '♥': 'c', '♦': 'o', '♣': 'p' }
+
+logo_21()
 
 def desenharCartas(carta):
     v, n = carta
