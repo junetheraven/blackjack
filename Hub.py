@@ -11,6 +11,7 @@ while True:
     print('\n\nEscolha seu jogo e se divirta!!')
     print("1 - 21")
     print("2 - Roleta")
+    print("3 - Bac bo")
     print("0 - Sair")
 
     escolha = input("Número do jogo: ")
@@ -19,6 +20,8 @@ while True:
         subprocess.run([sys.executable, "main.py"], cwd="Grazi")
     elif escolha == "2":
         subprocess.run([sys.executable, "main.py"], cwd="Ricardo")
+    elif escolha == "3":
+        subprocess.run([sys.executable, "bac_bo.py"], cwd="Davi")
     elif escolha == "0":
         print("Obrigado pela presença!"+'\n'+"Volte novamente!")
         # break  ("exit()" encerra o programa como um todo Vini ;D)
