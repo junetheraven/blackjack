@@ -1,87 +1,30 @@
-import random
 import sys
-from estruturas import Queue
-import cartas
-
 from pathlib import Path # Função para importar arquivos de outros diretórios
+
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent)) # Caminho da pasta principal do projeto
+
 from logos import logo_21
+from estruturas import Queue, Stack
+from funcoes import *
 
-valores = {'A': 11, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9, '10': 10, 'J': 10, 'Q': 10, 'K': 10}
-naipes = {'♠': 'e', '♥': 'c', '♦': 'o', '♣': 'p' }
-
-logo_21()
-
-def desenharCartas(carta):
-    v, n = carta
-    num = '1' if v == 'A' else v.lower()
-    funcao = getattr(cartas, f'c{num}{naipes[n]}')
-    return [l.rstrip().ljust(15) for l in funcao().split('\n') if l.strip()]
-
-def desenharMao(mao):
-    desenhos = [desenharCartas(c) for c in mao]
-    return '\n'.join(' '.join(d[i] for d in desenhos) for i in range(len(desenhos[0])))
-
-def criarBaralho():
-    baralho = [(v, n) for v in valores for n in naipes]
-    random.shuffle(baralho)
-    return baralho
-
-def pontuar(mao):
-    total = sum(valores[v] for v, _ in mao)
-    ases = sum(1 for v, _ in mao if v == 'A')
-    while total > 21 and ases:
-        total -= 10
-        ases -= 1
-    return total
-
-def sacar(baralho, cartasUsadas):
-    carta = baralho.pop()
-    cartasUsadas.add(carta)
-    return carta
-
-def turnoJogador(baralho, mao, usadas):
-    while pontuar(mao) < 21:
-        print('=' * 100)
-        print(f'Sua mão ({pontuar(mao)}):')
-        print(desenharMao(mao))
-        
-        opcao = input('[p] pedir   [s] parar   ').strip().lower()
-        
-        if opcao == 'p':
-            mao.append(sacar(baralho, usadas))
-        elif opcao == 's':
-            break
-        else:
-            print('Opção inválida')
-            
-    print(f'Mão final ({pontuar(mao)}):')
-    print(desenharMao(mao))
-    print('=' * 100)
-        
-def turnoDealer(baralho, mao, usadas):
-    while pontuar(mao) < 17:
-        mao.append(sacar(baralho, usadas))
-    print(f'Mão do dealer ({pontuar(mao)}):')
-    print(desenharMao(mao))
-    
-def definirGanhador(j, d):
-    if j > 21:
-        return 'Dealer'
-    if d > 21 or j > d:
-        return 'Jogador'
-    if d > j:
-        return 'Dealer'
-    return 'Empate'
+fichasIniciais = 200
+baralhoMinimo = 30
 
 def main():
-    baralho = []
-    usadas = set()
+    logo_21()
     
-    while True:
-        if len(baralho) < 15:
-            baralho[:] = criarBaralho()
-            usadas.clear()
+    baralho = criarBaralho()
+    usadas = set()
+    descarte = Stack()
+    fichas = fichasIniciais
+    placar = {'Jogador': 0, 'Dealer': 0, 'Empate': 0}
+    
+    while fichas > 0:
+        if baralho.size() < baralhoMinimo:
+            print('Embaralhando cartas...')
+            embaralhar(baralho, descarte)
+            
+        aposta = pedirAposta(fichas)
             
         maos = {'Jogador': [], 'Dealer': []}
         for _ in range(2):
@@ -103,9 +46,25 @@ def main():
                 
         vencedor = definirGanhador(pontuar(maos['Jogador']), pontuar(maos['Dealer']))
         print(f'Resultado: {vencedor}')
-            
-        if input('\nJogar de novo? [s] sim [n] não   ').strip().lower() != 's':
-            print('Até logo ^^/')
-            break
         
-main()
+        fichas = atualizarFichas(fichas, aposta, vencedor)
+        placar[vencedor] += 1
+        descartar(usadas, descarte)
+        mostrarPlacar(placar, fichas)
+        
+        if fichas == 0:
+            print('Você ficou sem fichas! Fim de jogo.')
+            break
+            
+        resposta = input('\nJogar de novo? [s] sim [n] não  ').strip().lower()
+        
+        while resposta not in ['s', 'n']:
+            print('Resposta inválida! Digite s ou n')
+            resposta = input('\nJogar de novo? [s] sim [n] não  ').strip().lower()
+            
+        if resposta == 'n': 
+            print(f'Você saiu com {fichas} fichas. Até logo ^^/')
+            break    
+        
+if __name__ == '__main__':
+    main()
