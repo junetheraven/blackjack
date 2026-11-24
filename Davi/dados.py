@@ -1,6 +1,7 @@
 cores = {
     "Player":  "\033[34m",  
     "Banker":  "\033[31m",
+    "Tie": "\033[33m",
     "Reset": "\033[m"
 }
 

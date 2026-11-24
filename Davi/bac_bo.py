@@ -31,11 +31,14 @@ def fase_de_apostas(saldo):
     escolha = ""
     while escolha not in opcoes:
         escolha = input("Opção (1/2/3): ").strip()
+        if escolha not in opcoes:
+            print('\033[1;33m>> Opção inválida! Digite 1, 2 ou 3\033[m')
+        
     lado_apostado = opcoes[escolha]
     pilha_fichas = Pilha()
 
     while True:
-        print(f"\nApostando em: \033[1m{lado_apostado}\033[m | Total na mesa: \033[1;32mR$ {pilha_fichas.total():.2f}\033[m | Saldo restante: \033[1;32mR$ {saldo:.2f}\033[m")
+        print(f"\nApostando em: \033[1m{colorir(lado_apostado,lado_apostado)}\033[m | Total na mesa: \033[1;32mR$ {pilha_fichas.total():.2f}\033[m | Saldo restante: \033[1;32mR$ {saldo:.2f}\033[m")
         print("Compre uma ficha \033[1;31;40m[5]\033[m +R$5 | \033[1;31;40m[10]\033[m +R$10 | \033[1;31;40m[25]\033[m +R$25 | \033[1;31;40m[50]\033[m +R$50 | [D] Desfazer última ficha | [C] Confirmar")
         acao = input("Sua ação: ").strip().upper()
 
@@ -45,21 +48,21 @@ def fase_de_apostas(saldo):
                 pilha_fichas.push(valor)
                 saldo -= valor
             else:
-                print(">> Saldo insuficiente para essa ficha.")
+                print("\033[1;33m>> Saldo insuficiente para essa ficha.\033[m")
         elif acao == "D":
             ficha_removida = pilha_fichas.pop()
             if ficha_removida is not None:
                 saldo += ficha_removida
                 print(f">> Ficha de \033[1;32mR$ {ficha_removida:.2f}\033[m removida.")
             else:
-                print(">> Nenhuma ficha na mesa para desfazer.")
+                print("\033[1;33m>> Nenhuma ficha na mesa para desfazer.\033[m")
         elif acao == "C":
             if pilha_fichas.total() > 0:
                 break
             else:
-                print(">> Coloque pelo menos uma ficha antes de confirmar.")
+                print("\033[1;33m>> Coloque pelo menos uma ficha antes de confirmar.\033[m")
         else:
-            print(">> Comando inválido.")
+            print("\033[1;33m>> Comando inválido!\033[m")
 
     return lado_apostado, pilha_fichas.total(), saldo
 
@@ -141,14 +144,19 @@ def iniciar_bac_bo():
 
         print(f"\nSaldo atualizado: \033[1;32mR$ {saldo:.2f}\033[m")
         if saldo < 5.0:
-            print("Saldo insuficiente para continuar jogando (aposta mínima R$ 5,00).")
+            print("\033[1;33m>> Saldo insuficiente para continuar jogando (aposta mínima R$ 5,00).\033[m")
+            break
+        
+        while True:
+            continuar = input("Jogar outra rodada? (S/N): ").strip().upper()
+            if continuar in ("S", "N"):
+                break
+            print("\033[1;33m>> Opção inválida! Digite apenas S ou N.\033[m")
+
+        if continuar == "N":
             break
 
-        continuar = input("Jogar outra rodada? (S/N): ").strip().upper()
-        if continuar != "S":
-            break
-
-    print(f"\nFim de jogo! Você saiu da mesa com \033[1;32mR$ {saldo:.2f}.\033[m")
+    print(f"\n\033[1mFim de jogo! Você saiu da mesa com \033[1;32mR$ {saldo:.2f}.\033[m")
 
 
 if __name__ == "__main__":
