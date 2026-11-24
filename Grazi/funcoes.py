@@ -1,4 +1,5 @@
 from estruturas import Stack   
+from logos import VERDE, VERMELHO, AMARELO, AZUL, CIANO, RESET, NEGRITO
 import cartas
 
 import random
@@ -57,11 +58,11 @@ def sacar(baralho, cartasUsadas):
 
 def turnoJogador(baralho, mao, usadas):
     while pontuar(mao) < 21:
-        print('=' * 100)
-        print(f'Sua mão ({pontuar(mao)}):')
+        print(AZUL + '=' * 100 + RESET)
+        print(CIANO + f'Sua mão ({pontuar(mao)}):' + RESET)
         print(desenharMao(mao))
         
-        opcao = input('[p] pedir   [s] parar   ').strip().lower()
+        opcao = input(AMARELO + '[p] pedir   [s] parar   ' + RESET).strip().lower()
         
         if opcao == 'p':
             mao.append(sacar(baralho, usadas))
@@ -70,14 +71,14 @@ def turnoJogador(baralho, mao, usadas):
         else:
             print('Opção inválida')
             
-    print(f'Mão final ({pontuar(mao)}):')
+    print(NEGRITO + AZUL + f'Mão final ({pontuar(mao)}):' + RESET)
     print(desenharMao(mao))
-    print('=' * 100)
+    print(AZUL + '=' * 100 + RESET)
         
 def turnoDealer(baralho, mao, usadas):
     while pontuar(mao) < 17:
         mao.append(sacar(baralho, usadas))
-    print(f'Mão do dealer ({pontuar(mao)}):')
+    print(VERMELHO + f'Mão do dealer ({pontuar(mao)}):' + RESET)
     print(desenharMao(mao))
     
 def definirGanhador(j, d):
@@ -90,30 +91,55 @@ def definirGanhador(j, d):
     return 'Empate'
 
 def pedirAposta(fichas):
-    while True:
-        quant = input(f'Fichas: {fichas} | Quanto quer apostar? ').strip()
+    pilha = Stack()
+    aposta = 0
     
-        if not quant.isdigit():
-            print('Digite um número válido')
+    while True:
+        print(AMARELO + f'Fichas disponíveis: {fichas - aposta} \n\nEscolha o valor da ficha: \n[5] [10] [25] [50]\n' + RESET)
+        
+        valor = input(CIANO + 'Valor: ' + RESET).strip()
+        
+        if not valor.isdigit() or int(valor) not in [5, 10, 25, 50]:
+            print(VERMELHO + 'Valor inválido' + RESET)
             continue
         
-        aposta = int(quant)
-        if aposta <= 0 or aposta > fichas:
-            print(f'Aposta inválida. Você tem {fichas} fichas.')
+        valor = int(valor)
+        
+        if aposta +  valor > fichas:
+            print(VERMELHO + 'Você não possui fichas suficientes.' + RESET)
             continue
         
-        return aposta
+        pilha.push(valor)
+        aposta += valor
+        
+        while True:
+            print(AMARELO + f'\nAposta atual: {aposta} fichas' + RESET)
+            resposta = input(CIANO + '[a] adicionar outra ficha [d] desfazer última ficha [c] confirmar  ' + RESET).strip().lower()
+            
+            if resposta == 'c':
+                return aposta
+            elif resposta == 'a':
+                break
+            
+            elif resposta == 'd':
+                aposta -= pilha.pop()
+                print(VERMELHO + 'Última ficha removida.' + RESET)
+                if pilha.isEmpty():
+                    break
+            
+            else:
+                print(VERMELHO + 'Resposta inválida! Digite a, d ou c.' + RESET)
     
 def atualizarFichas(fichas, aposta, vencedor):
     if vencedor == 'Jogador':
-        print(f'Você ganhou {aposta} fichas!')
+        print(VERDE + f'Você ganhou {aposta} fichas!' + RESET)
         return fichas + aposta
     
     if vencedor == 'Dealer':
-        print(f'Você perdeu {aposta} fichas.')
+        print(VERMELHO + f'Você perdeu {aposta} fichas.' + RESET)
         return fichas - aposta
     
-    print('Empate: suas fichas foram devolvidas')
+    print(AMARELO + 'Empate: suas fichas foram devolvidas' + RESET)
     return fichas
 
 def mostrarPlacar(placar, fichas):

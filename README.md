@@ -17,7 +17,7 @@ O **Cassino DGRV** é uma central de jogos de cassino modularizada. A aplicaçã
 
 ## 🎮 Jogos Disponíveis e Recursos Técnicos
 
-### 1. 🃏 Blackjack (21) — *Grazielle*
+### 1. 🃏 Blackjack (21) — *Grazielli*
 Clássico jogo de cartas em que o objetivo é somar o mais próximo possível de 21 pontos sem ultrapassar esse limite, enfrentando o Dealer.
 ---
 
@@ -41,18 +41,18 @@ O arquivo `Hub.py` atua como porta de entrada do **Cassino DGRV**, utilizando:
 ## ▶️ Como Executar
 
 ### Pré-requisitos
-* **Python 3.10+** instalado.
+* **Python 3.12+** instalado.
 * **Nenhuma biblioteca externa é necessária** — todo o projeto utiliza apenas módulos nativos do Python (`random`, `time`, `os`, `sys`, `subprocess`, `pathlib`).
 
 ### Passo a passo
 
 1. Clone o repositório:
    ```bash
-   git clone https://github.com/junetheraven/blackjack
+   git clone https://github.com/junetheraven/cassinoDGRV
    ```
 2. Acesse a pasta principal do projeto:
    ```bash
-   cd cassino
+   cd cassinoDRGV
    ```
 3. Execute o Hub do cassino:
    ```bash
