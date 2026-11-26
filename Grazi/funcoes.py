@@ -145,7 +145,7 @@ def atualizarFichas(fichas, aposta, vencedor):
 def mostrarPlacar(placar, fichas):
     print('=' * 40)
     
-    print(f'PLACAR Jogador {placar['Jogador']} x  {placar['Dealer']} Dealer  (empates: {placar['Empate']})')
+    print(f"PLACAR Jogador {placar['Jogador']} x  {placar['Dealer']} Dealer  (empates: {placar['Empate']})")
     print(f'Fichas: {fichas}')
     
     print('=' * 40)
