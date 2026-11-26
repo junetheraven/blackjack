@@ -51,17 +51,25 @@ else:
         fila.enqueue(y)
         jogadores[y] = {"Créditos": 100}
     random.shuffle(fila.items)
+    limpar_tela()
     while fila.size()>2:
+        apostas = 0
         mesa = 0
         baralho = Stack()
         random.shuffle(cartasj)
         for i in cartasj:
             baralho.push(i)
+        print("Todos os jogadores pagaram 10 de créditos")
+        print("\n")
         for i in fila.items:
+            jogadores[i]["Aposta"] = 0
             jogadores[i]["Créditos"] -= 10
             mesa += 10
             jogadores[i]["Pass"] = 1
             jogadores[i]["Mão"] = [baralho.pop(), baralho.pop(), baralho.pop()]
+            print(f"{i} atualmente tem: {jogadores[i]['Créditos']} de créditos")
+        input("Podemos começar? ENTER ")
+        limpar_tela()
         for i in range(fila.size()):
             cartamesa = True
             descarte = None
@@ -69,7 +77,7 @@ else:
             for a in range(rodadas):
                 print(f"=== RODADA {i+1} de {rodadas} ===")
                 jog = fila.dequeue()
-                input(f"Vez de {jog}\n Quando você estiver seguro(a) que seus adversários não possam olhar sua carta, aperte ENTER")
+                input(f"Vez de {jog}\n Quando você estiver seguro(a) que seus adversários não possam olhar sua carta, aperte ENTER ")
                 limpar_tela()
                 print(f"=== RODADA {i+1} de {rodadas} ===")
                 mao = jogadores[jog]["Mão"]
@@ -101,7 +109,34 @@ else:
                     descarte = mao.pop(esc-1)
                     print("Sua mão agora é: ")
                     imgcarta(mao, naipes)
-                input("Aperte ENTER para passar para o próximo jogador")
+                if i == (rodadas-1):
+                    if jogadores[jog]["Créditos"] > 0:
+                        print(f"Seus créditos: {jogadores[jog]['Créditos']}")
+                        print(f"Apostas registradas: {apostas}")
+                        if apostas>0:
+                            for v in fila.items:
+                                if jogadores[v]["Aposta"] == 0:
+                                    continue
+                                else:
+                                    print(f"{v} apostou {jogadores[v]['Aposta']} créditos")
+                        while True:
+                            print("\n")
+                            s = input("Deseja fazer alguma aposta? [s/n] ").strip().lower()
+                            if s in ('s', 'n'):
+                                break
+                            print("Opção inválida! Digite a opção correta!")
+                        if s == 's':
+                            while True:
+                                p = int(input("Quanto você vai apostar? "))
+                                if 0 <= p <= jogadores[jog]["Créditos"]:
+                                    break
+                                print(f"Valor inválido! Digite entre 1 e {jogadores[jog]['Créditos']} créditos.")
+                            if p > 0:
+                                apostas += 1
+                            jogadores[jog]["Créditos"] -= p
+                            jogadores[jog]["Aposta"] += p
+                            mesa += p
+                input("Aperte ENTER para passar para o próximo jogador ")
                 limpar_tela()
                 fila.enqueue(jog)
             fila.enqueue(fila.dequeue())
@@ -199,8 +234,11 @@ else:
             else:
                 print(f"Jogador {jog} por falta de créditos foi eliminado!")
         print(f"Cassino DGRV: {cassino} créditos")
-        input("\nPressione ENTER para começar outra partida!")
+        p = input("\nPressione ENTER para começar outra partida (ou digite 'p' e aperte ENTER para parar): ").strip().lower()
+        if p == 'p':
+            break
         limpar_tela()
+    limpar_tela()
     print("\n" + "=" * 40)
     print("FIM DE JOGO - RANKING FINAL".center(40))
     print("=" * 40)
