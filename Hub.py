@@ -43,5 +43,5 @@ while True:
         # break  ("exit()" encerra o programa como um todo Vini ;D)
         exit()
     else:
-        print('Opção inválida! Digite 1, 2, 3 ou 0')
+        print('Opção inválida! Digite 1, 2, 3, 4 ou 0')
         input('\nAperte Enter para voltar ao menu...')

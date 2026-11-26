@@ -9,15 +9,18 @@ O **Cassino DGRV** é uma central de jogos de cassino modularizada. A aplicaçã
 
 ## 🧠 Resumo das Estruturas de Dados Utilizadas
 
-| **Blackjack (21)** | Grazielle | **Fila (`Queue`)**, **Dicionário**, **Tupla**, **Conjunto (`set`)** e comportamento de **Pilha** no saque do baralho |
-| **Roleta** | Ricardo | **Fila (`Queue`)**, **Tupla** e **Conjunto (`set`)** |
-| **Bac Bo** | Davi | **Fila (`Fila`)**, **Pilha (`Pilha`)**, **Dicionário** e **Tupla** |
+| Jogo | Integrante | Estruturas e recursos |
+|---|---|---|
+| Blackjack (21) | Grazielli | Fila (`Queue`), pilha (`Stack`), dicionários, tuplas, conjunto (`set`) e listas |
+| Roleta | Ricardo | Fila (`Queue`), tuplas, conjuntos (`set`) e listas |
+| Bac Bo | Davi | Fila (`Fila`), pilha (`Pilha`), tuplas, dicionários e listas |
+| Vini 1 | Vinícius | Fila (`Queue`), pilha (`Stack`), Max Heap, HeapSort, dicionários, tuplas e listas |
 
 ---
 
 ## 🎮 Jogos Disponíveis e Recursos Técnicos
 
-### 1. 🃏 Blackjack (21) — *Grazielli*
+### 1. ♠️ Blackjack (21) — *Grazielli*
 Clássico jogo de cartas em que o objetivo é somar o mais próximo possível de 21 pontos sem ultrapassar esse limite, enfrentando o Dealer.
 ---
 
@@ -27,6 +30,10 @@ Simulação de uma mesa de roleta europeia (números de 0 a 36), permitindo apos
 
 ### 3. 🎲 Bac Bo — *Davi*
 Jogo de dados inspirado no Bacará, no qual o jogador aposta no duelo entre **Player (Azul)** e **Banker (Vermelho)** ou no **Tie (Empate)**, onde cada lado lança dois dados.
+---
+
+### 4. 🃏 Vini 1 — *Vinícius*
+Jogo de cartas em que os participantes trocam cartas para alcançar a maior pontuação possível sem ultrapassar 21, utilizando estratégias de descarte e desempate. 
 ---
 
 ## 🧩 Hub Principal e Integração
@@ -52,7 +59,7 @@ O arquivo `Hub.py` atua como porta de entrada do **Cassino DGRV**, utilizando:
    ```
 2. Acesse a pasta principal do projeto:
    ```bash
-   cd cassinoDRGV
+   cd cassinoDGRV
    ```
 3. Execute o Hub do cassino:
    ```bash
