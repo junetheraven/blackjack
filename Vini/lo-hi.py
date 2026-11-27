@@ -16,11 +16,10 @@ if x >= 2:
     for i in range(x):
         y = input(f"Qual o nome do {i+1}° jogador(a)? ")
         fila.enqueue(y)
-        jogadores[y] = {"Créditos": 500}
+        jogadores[y] = {"Créditos": 1000}
     limpar_tela()
     while fila.size()>1:
         random.shuffle(fila.items)
-        baralhomesa = None
         mesa = 10
         baralho = embaralhar()
         for i in fila.items:
@@ -47,7 +46,7 @@ if x >= 2:
             cartaant = valores[baralhomesa[0]]
             cartanov = valores[novacarta[0]]
             if (cartaant<cartanov and esc == '1') or (cartanov<cartaant and esc=='2') or (cartaant==cartanov and esc == '3'):
-                mesa +=10
+                mesa *=2
                 print("Acertou!!")
                 input("Aperte ENTER para ser a vez do próximo")
                 limpar_tela()
@@ -55,6 +54,7 @@ if x >= 2:
             else:
                 print("Errou!!")
                 jogadores[jog]["Créditos"] -= mesa
+                print(f"\033[31m{jog} perdeu {mesa} créditos!\033[0m")
                 for i in fila.items:
                     jogadores[i]["Créditos"] += mesa
                     print(f"{i} ganhou {mesa} créditos!")
@@ -69,15 +69,16 @@ if x >= 2:
         for i in range(fila.size()):
             jog = fila.dequeue()
             print(f"{jog}: {jogadores[jog]['Créditos']} créditos")
-            fila.enqueue(jog)
-        for i in range (fila.size()):
-            jog = fila.dequeue()
             if jogadores[jog]["Créditos"] > 0:
                 fila.enqueue(jog)
             else:
                 print("\n")
-                print(f"\033[31mJogador {jog} ficou sem créditos e foi eliminado!\033[0m")
-        p = input("\nPressione ENTER para próxima partida (ou 'p' e ENTER para parar): ").strip().lower()
+                print(f"\033[31m{jog} ficou sem créditos e foi eliminado!\033[0m")
+        if fila.size()==1:
+            p = 'p'
+            input("Vamos ao ranking!!! [ENTER]")
+        else:
+            p = input("\nPressione ENTER para próxima partida (ou 'p' e ENTER para parar): ").strip().lower()
         if p == 'p':
             break
         limpar_tela()
@@ -91,9 +92,13 @@ if x >= 2:
         ranking.append((jogadores[jog]["Créditos"], jog))
     heapSort(ranking)
     ranking.reverse()
-    pos = 1
-    for creditos, nome in ranking:
+    pos = 0
+    anterior = None
+    for i in range(len(ranking)):
+        creditos, nome = ranking[i]
+        if creditos != anterior:
+            pos = i + 1
         print(f"{pos}° lugar: {nome} - {creditos} créditos")
-        pos += 1
+        anterior = creditos
 else:
     print("")

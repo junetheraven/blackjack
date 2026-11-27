@@ -21,7 +21,7 @@ else:
     for i in range(x):
         y = input(f"Qual o nome do {i+1}° jogador(a)? ")
         fila.enqueue(y)
-        jogadores[y] = {"Créditos": 100, "Pass": 0}
+        jogadores[y] = {"Créditos": 500, "Pass": 0}
     random.shuffle(fila.items)
     limpar_tela()
     while fila.size() > 2:
@@ -207,11 +207,23 @@ else:
             jog = fila.dequeue()
             print(f"{jog}: {jogadores[jog]['Créditos']} créditos")
             if jogadores[jog]["Créditos"] > 0:
-                fila.enqueue(jog)
+                while True:
+                    c = input("Deseja continuar? [s/n] ").strip().lower()
+                    if c in ('s', 'n'):
+                        break
+                    print("Opção inválida! Digite apenas 1, 2 ou 3.")
+                if c == s:
+                    fila.enqueue(jog)
+                print("Perfeito!")
             else:
                 print(f"Jogador {jog} por falta de créditos foi eliminado!")
+            limpar_tela()
         print(f"Cassino DGRV: {cassino} créditos")
-        p = input("\nPressione ENTER para começar outra partida (ou digite 'p' e aperte ENTER para parar): ").strip().lower()
+        if fila.size()<=2:
+            p = 'p'
+            input("Vamos ao ranking!!! [ENTER]")
+        else:
+            p = input("\nPressione ENTER para próxima partida (ou 'p' e ENTER para parar): ").strip().lower()
         if p == 'p':
             break
         limpar_tela()
@@ -225,7 +237,11 @@ else:
         ranking.append((jogadores[jog]["Créditos"], jog))
     heapSort(ranking)
     ranking.reverse()
-    pos = 1
-    for creditos, nome in ranking:
+    pos = 0
+    anterior = None
+    for i in range(len(ranking)):
+        creditos, nome = ranking[i]
+        if creditos != anterior:
+            pos = i + 1
         print(f"{pos}° lugar: {nome} - {creditos} créditos")
-        pos += 1
+        anterior = creditos
