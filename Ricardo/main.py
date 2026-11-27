@@ -48,9 +48,9 @@ def jogar_roleta():
                     f"{resultado['numero']} ({resultado['cor']})"
                     for resultado in resultados
                 )
-                print(f"{c_roxo}\n{100*'-'}\nÚltimos resultados: {historico_formatado}{c_fim}")
+                print(f"\n{100*'-'}\n{c_roxo}Últimos resultados: {historico_formatado}{c_fim}")
             else:
-                print(f"{c_roxo}\n{100*'-'}\nAinda não há resultados sorteados.{c_fim}")
+                print(f"\n{100*'-'}\n{c_roxo}Ainda não há resultados sorteados.{c_fim}")
             continue
         if tipo not in {1, 2, 3, 0}:
             print("Opção inválida.")
