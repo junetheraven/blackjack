@@ -15,8 +15,13 @@ if x >= 2:
     fila = Queue()
     for i in range(x):
         y = input(f"Qual o nome do {i+1}° jogador(a)? ")
+        while True:
+            h = int(input("Quantos créditos você quer comprar? (mínimo 10): "))
+            if h >= 10:
+                break
+            print("Valor inválido! Você precisa de pelo menos 10 créditos para entrar na mesa.")
         fila.enqueue(y)
-        jogadores[y] = {"Créditos": 1000}
+        jogadores[y] = {"Créditos": h}
     limpar_tela()
     while fila.size()>1:
         random.shuffle(fila.items)
@@ -69,7 +74,7 @@ if x >= 2:
         for i in range(fila.size()):
             jog = fila.dequeue()
             print(f"{jog}: {jogadores[jog]['Créditos']} créditos")
-            if jogadores[jog]["Créditos"] > 0:
+            if jogadores[jog]["Créditos"] >= 10:
                 fila.enqueue(jog)
             else:
                 print("\n")
