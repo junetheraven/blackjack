@@ -87,9 +87,8 @@ if x >= 2:
     print("FIM DE JOGO - RANKING FINAL".center(40))
     print("=" * 40)
     ranking = []
-    while not fila.isEmpty():
-        jog = fila.dequeue()
-        ranking.append((jogadores[jog]["Créditos"], jog))
+    for nome, dados in jogadores.items():
+        ranking.append((dados["Créditos"], nome))
     heapSort(ranking)
     ranking.reverse()
     pos = 0

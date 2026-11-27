@@ -211,13 +211,12 @@ else:
                     c = input("Deseja continuar? [s/n] ").strip().lower()
                     if c in ('s', 'n'):
                         break
-                    print("Opção inválida! Digite apenas 1, 2 ou 3.")
-                if c == s:
+                    print("Opção inválida! Digite s/n.")
+                if c == 's':
                     fila.enqueue(jog)
                 print("Perfeito!")
             else:
                 print(f"Jogador {jog} por falta de créditos foi eliminado!")
-            limpar_tela()
         print(f"Cassino DGRV: {cassino} créditos")
         if fila.size()<=2:
             p = 'p'
@@ -232,9 +231,8 @@ else:
     print("FIM DE JOGO - RANKING FINAL".center(40))
     print("=" * 40)
     ranking = [(cassino, "Cassino DGRV")]
-    while not fila.isEmpty():
-        jog = fila.dequeue()
-        ranking.append((jogadores[jog]["Créditos"], jog))
+    for nome, dados in jogadores.items():
+        ranking.append((dados["Créditos"], nome))
     heapSort(ranking)
     ranking.reverse()
     pos = 0
