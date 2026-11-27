@@ -1,17 +1,3 @@
-# == cores pro terminal ==
-VERMELHO = '\033[91m'
-VERDE = '\033[92m'
-AMARELO = '\033[93m'
-AZUL = '\033[94m'
-ROXO = '\033[95m'
-CIANO = '\033[96m'
-BRANCO = '\033[97m'
-
-# == formatações ==
-NEGRITO = '\033[1m'
-RESET = '\033[0m'
-
-
 def logo_hub(): # Roman
     print('\033[92m' + '\033[1m' + r'''
   .oooooo.         .o.        .oooooo..o  .oooooo..o ooooo ooooo      ooo   .oooooo.             oooooooooo.     .oooooo.    ooooooooo.   oooooo     oooo 
