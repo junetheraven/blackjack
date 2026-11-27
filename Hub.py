@@ -39,6 +39,10 @@ while True:
         limpaTela()
         subprocess.run([sys.executable, "Vini_1.py"], cwd="Vini")
         input("\nAperte Enter para voltar ao menu...")
+    elif escolha == "5":
+        limpaTela()
+        subprocess.run([sys.executable, "lo-hi.py"], cwd="Vini")
+        input("\nAperte Enter para voltar ao menu...")
     elif escolha == "0":
         print("Obrigado pela presença!"+'\n'+"Volte novamente!")
         # break  ("exit()" encerra o programa como um todo Vini ;D)

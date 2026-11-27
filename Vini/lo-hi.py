@@ -1,6 +1,13 @@
+import sys
+from pathlib import Path
 from cartas import *
 from Estruturas import *
 import random
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from logos import logo_lo_hini
+
+logo_lo_hini()
+
 print("Sejam bem vindo(s) ao jogo LO-HINI\n Um jogo de batata quente com cartas!!\n Se divirtam!!")
 x = int(input("Quantos jogadores serão? "))
 if x >= 2:
