@@ -20,11 +20,12 @@ else:
     fila = Queue()
     for i in range(x):
         y = input(f"Qual o nome do {i+1}° jogador(a)? ")
-        while True:
+        h = 500
+        '''while True:
             h = int(input("Quantos créditos você quer comprar? (mínimo 10): "))
             if h >= 10:
                 break
-            print("Valor inválido! Você precisa de pelo menos 10 créditos para entrar na mesa.")
+            print("Valor inválido! Você precisa de pelo menos 10 créditos para entrar na mesa.")'''
         fila.enqueue(y)
         jogadores[y] = {"Créditos": h, "Pass": 0}
     random.shuffle(fila.items)
@@ -60,7 +61,7 @@ else:
                 mao = jogadores[jog]["Mão"]
                 print(f"\nVez de {jog} | Passes restantes: {jogadores[jog]['Pass']}")
                 print("Sua mão: ")
-                imgcarta(mao, naipes)
+                imgcarta(mao)
                 if jogadores[jog]["Pass"] > 0:
                     while True:
                         esc = input("Qual carta deseja descartar [1, 2 ou 3]? Ou deseja usar o Pass? [p] ").strip().lower()
@@ -85,7 +86,7 @@ else:
                         mao.append(descarte)
                     descarte = mao.pop(esc - 1)
                     print("Sua mão agora é: ")
-                    imgcarta(mao, naipes)
+                    imgcarta(mao)
                 if i == (rodadas - 1):
                     if jogadores[jog]["Créditos"] > 0:
                         print(f"Seus créditos: {jogadores[jog]['Créditos']}")

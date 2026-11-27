@@ -15,11 +15,12 @@ if x >= 2:
     fila = Queue()
     for i in range(x):
         y = input(f"Qual o nome do {i+1}° jogador(a)? ")
-        while True:
+        h = 1000
+        '''while True:
             h = int(input("Quantos créditos você quer comprar? (mínimo 10): "))
             if h >= 10:
                 break
-            print("Valor inválido! Você precisa de pelo menos 10 créditos para entrar na mesa.")
+            print("Valor inválido! Você precisa de pelo menos 10 créditos para entrar na mesa.")'''
         fila.enqueue(y)
         jogadores[y] = {"Créditos": h}
     limpar_tela()

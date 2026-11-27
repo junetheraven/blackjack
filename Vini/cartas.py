@@ -20,7 +20,7 @@ def embaralhar():
    for i in cartasj:
       baralho.push(i)
    return baralho
-def imgcarta(mao, naipes=naipes, mostrar_indices=True):
+def imgcarta(mao, mostrar_indices=True):
    cartas_fatiadas = []
    for valor, naipe in mao:
       if valor == 'A':
