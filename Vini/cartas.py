@@ -10,8 +10,6 @@ valores = {
 naipes = {
    '♠': 'e', '♥': 'c', '♦': 'o', '♣': 'p'
 }
-def limpar_tela():
-   os.system('cls' if os.name == 'nt' else 'clear')
 def embaralhar():
    cartasj = []
    for v in valores:
