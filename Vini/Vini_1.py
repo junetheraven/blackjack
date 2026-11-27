@@ -1,7 +1,15 @@
 import random
+import sys
 import cartas
 import os
 from Estruturas import *
+
+from pathlib import Path # Função para importar arquivos de outros diretórios
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent)) # Caminho da pasta principal do projeto
+from logos import logo_vini_1
+
+logo_vini_1()
+
 def limpar_tela():
     os.system('cls' if os.name == 'nt' else 'clear')
 def imgcarta(mao, naipes):

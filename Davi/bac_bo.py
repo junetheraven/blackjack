@@ -1,7 +1,14 @@
 import random
+import sys
 import time
 from estrutura import Pilha, Fila
 from dados import cores, faces_dado
+
+from pathlib import Path # Função para importar arquivos de outros diretórios
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent)) # Caminho da pasta principal do projeto
+from logos import logo_bacbo
+
+logo_bacbo()
 
 ODDS_TIE = {
     2: 88.0, 12: 88.0,
