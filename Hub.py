@@ -18,7 +18,7 @@ while True:
     print("2 - Roleta")
     print("3 - Bac bo")
     print("4 - Vini-One")
-    print("5 - Li-Hini")
+    print("5 - Lo-Hini")
     print("0 - Sair\n\n")
 
     escolha = input("Número do jogo: ")
