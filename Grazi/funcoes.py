@@ -1,5 +1,4 @@
-from estruturas import Stack   
-from logos import VERDE, VERMELHO, AMARELO, AZUL, CIANO, RESET, NEGRITO
+from estruturas import Stack, VERDE, VERMELHO, AMARELO, AZUL, CIANO, RESET, NEGRITO
 import cartas
 
 import random

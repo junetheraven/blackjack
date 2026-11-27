@@ -1,14 +1,11 @@
 import sys
-from pathlib import Path # Função para importar arquivos de outros diretórios
+from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent)) # Caminho da pasta principal do projeto
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from logos import logo_21, AMARELO, CIANO, ROXO, RESET
-from estruturas import Queue, Stack
+from logos import logo_21
+from estruturas import Queue, Stack, AMARELO, CIANO, ROXO, RESET
 from funcoes import *
-
-fichasIniciais = 100
-baralhoMinimo = 30
 
 def main():
     logo_21()
@@ -16,11 +13,11 @@ def main():
     baralho = criarBaralho()
     usadas = set()
     descarte = Stack()
-    fichas = fichasIniciais
+    fichas = 100
     placar = {'Jogador': 0, 'Dealer': 0, 'Empate': 0}
     
     while fichas > 0:
-        if baralho.size() < baralhoMinimo:
+        if baralho.size() < 30:
             print(AMARELO + 'Embaralhando cartas...' + RESET)
             embaralhar(baralho, descarte)
             
@@ -40,9 +37,8 @@ def main():
             if vez == 'Jogador':
                 turnoJogador(baralho, maos['Jogador'], usadas)
                 print(CIANO + f"Sua pontuação: {pontuar(maos['Jogador'])}" + RESET)
-            else:
-                if pontuar(maos['Jogador']) < 21:
-                    turnoDealer(baralho, maos['Dealer'], usadas)
+            elif pontuar(maos['Jogador']) < 21:
+                turnoDealer(baralho, maos['Dealer'], usadas)
                 
         vencedor = definirGanhador(pontuar(maos['Jogador']), pontuar(maos['Dealer']))
         print(ROXO + f'Resultado: {vencedor}' + RESET)
@@ -57,8 +53,7 @@ def main():
             break
             
         resposta = input('\nJogar de novo? [s] sim [n] não  ').strip().lower()
-        
-        while resposta not in ['s', 'n']:
+        while resposta not in ('s', 'n'):
             print('Resposta inválida! Digite s ou n')
             resposta = input('\nJogar de novo? [s] sim [n] não  ').strip().lower()
             
