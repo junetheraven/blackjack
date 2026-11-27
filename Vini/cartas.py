@@ -1,4 +1,53 @@
 import sys
+import random
+import os
+from Estruturas import Stack
+
+valores = {
+   'A': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7,
+   '8': 8, '9': 9, '10': 10, 'J': 11, 'Q': 12, 'K': 13
+}
+naipes = {
+   '♠': 'e', '♥': 'c', '♦': 'o', '♣': 'p'
+}
+def limpar_tela():
+   os.system('cls' if os.name == 'nt' else 'clear')
+def embaralhar():
+   cartasj = []
+   for v in valores:
+      for n in naipes:
+         cartasj.append((v, n))
+   baralho = Stack()
+   random.shuffle(cartasj)
+   for i in cartasj:
+      baralho.push(i)
+   return baralho
+def imgcarta(mao, naipes=naipes, mostrar_indices=True):
+   cartas_fatiadas = []
+   for valor, naipe in mao:
+      if valor == 'A':
+         num = '1'
+      else:
+         num = valor.lower()
+      nome = f'c{num}{naipes[naipe]}'
+      funcao = globals()[nome]
+      desenho = funcao()
+      fatias = []
+      for linha in desenho.split('\n'):
+         if linha.strip() != "":
+               fatias.append(linha.rstrip().ljust(15))
+      cartas_fatiadas.append(fatias)
+   for i in range(len(cartas_fatiadas[0])):
+      linha_completa = ""
+      for carta in cartas_fatiadas:
+         linha_completa += carta[i] + " "
+      print(linha_completa)
+
+   if mostrar_indices:
+      rodape = ""
+      for i in range(len(cartas_fatiadas)):
+         rodape += f"[{i+1}]".center(15) + " "
+      print(rodape)
 
 sys.stdout.reconfigure(encoding="utf-8")
 

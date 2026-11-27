@@ -1,79 +1,44 @@
 import random
 import sys
-import cartas
-import os
+from pathlib import Path
+from cartas import *
 from Estruturas import *
 
-from pathlib import Path # Função para importar arquivos de outros diretórios
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent)) # Caminho da pasta principal do projeto
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from logos import logo_vini_1
 
 logo_vini_1()
 
-def limpar_tela():
-    os.system('cls' if os.name == 'nt' else 'clear')
-def imgcarta(mao, naipes):
-    cartas_fatiadas = []
-    for valor, naipe in mao:
-        if valor == 'A':
-            num = '1'
-        else:
-            num = valor.lower()
-        nome = f'c{num}{naipes[naipe]}'
-        funcao = getattr(cartas, nome)
-        desenho = funcao()
-        fatias = []
-        for linha in desenho.split('\n'):
-            if linha.strip() != "":
-                fatias.append(linha.rstrip().ljust(15))
-        cartas_fatiadas.append(fatias)
-    carta1 = cartas_fatiadas[0]
-    carta2 = cartas_fatiadas[1]
-    carta3 = cartas_fatiadas[2]
-    for i in range(len(carta1)):
-        print(carta1[i], carta2[i], carta3[i])
-    print("      [1]      ", "      [2]      ", "      [3]      ")
-
-print("Bem vindo ao jogo PASS\n Para jogar esse jogo tem que ter no mínimo 3 jogadores e no máximo 8.\n Se divirtam!!")
+print("Bem vindo ao jogo VINI-ONE\n Para jogar esse jogo tem que ter no mínimo 3 jogadores e no máximo 8.\n Se divirtam!!")
 x = int(input("Quantos jogadores serão? "))
-if x<3:
+if x < 3:
     print("Necessita-se de mais jogadores")
-elif x>8:
+elif x > 8:
     print("Se excedeu o número máximo de jogadores")
 else:
     cassino = 0
     jogadores = {}
     fila = Queue()
-    cartasj = []
-    valores = {
-        'A': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7,'8': 8, '9': 9, '10': 10, 'J': 11, 'Q': 12, 'K': 13
-    }
-    naipes = {
-        '♠': 'e', '♥': 'c', '♦': 'o', '♣': 'p'
-    }
-    for v in valores:
-        for n in naipes:
-            cartasj.append((v, n))
     for i in range(x):
         y = input(f"Qual o nome do {i+1}° jogador(a)? ")
         fila.enqueue(y)
-        jogadores[y] = {"Créditos": 100}
+        jogadores[y] = {"Créditos": 100, "Pass": 0}
     random.shuffle(fila.items)
     limpar_tela()
-    while fila.size()>2:
+    while fila.size() > 2:
+        baralho = embaralhar()
+        apostareal = 0
         apostas = 0
         mesa = 0
-        baralho = Stack()
-        random.shuffle(cartasj)
-        for i in cartasj:
-            baralho.push(i)
+        mesaaposta = 0
         print("Todos os jogadores pagaram 10 de créditos")
         print("\n")
         for i in fila.items:
             jogadores[i]["Aposta"] = 0
             jogadores[i]["Créditos"] -= 10
             mesa += 10
-            jogadores[i]["Pass"] = 1
+            if jogadores[i]["Pass"] < 2:
+                jogadores[i]["Pass"] += 1
             jogadores[i]["Mão"] = [baralho.pop(), baralho.pop(), baralho.pop()]
             print(f"{i} atualmente tem: {jogadores[i]['Créditos']} de créditos")
         input("Podemos começar? ENTER ")
@@ -90,7 +55,7 @@ else:
                 print(f"=== RODADA {i+1} de {rodadas} ===")
                 mao = jogadores[jog]["Mão"]
                 print(f"\nVez de {jog} | Passes restantes: {jogadores[jog]['Pass']}")
-                print(f"Sua mão: ")
+                print("Sua mão: ")
                 imgcarta(mao, naipes)
                 if jogadores[jog]["Pass"] > 0:
                     while True:
@@ -114,14 +79,14 @@ else:
                         cartamesa = False
                     else:
                         mao.append(descarte)
-                    descarte = mao.pop(esc-1)
+                    descarte = mao.pop(esc - 1)
                     print("Sua mão agora é: ")
                     imgcarta(mao, naipes)
-                if i == (rodadas-1):
+                if i == (rodadas - 1):
                     if jogadores[jog]["Créditos"] > 0:
                         print(f"Seus créditos: {jogadores[jog]['Créditos']}")
                         print(f"Apostas registradas: {apostas}")
-                        if apostas>0:
+                        if apostas > 0:
                             for v in fila.items:
                                 if jogadores[v]["Aposta"] == 0:
                                     continue
@@ -138,27 +103,32 @@ else:
                                 p = int(input("Quanto você vai apostar? "))
                                 if 0 <= p <= jogadores[jog]["Créditos"]:
                                     break
-                                print(f"Valor inválido! Digite entre 1 e {jogadores[jog]['Créditos']} créditos.")
+                                print(f"Valor inválido! Digite entre 0 e {jogadores[jog]['Créditos']} créditos.")
                             if p > 0:
                                 apostas += 1
+                                if p>=50:
+                                    apostareal += 1
                             jogadores[jog]["Créditos"] -= p
                             jogadores[jog]["Aposta"] += p
-                            mesa += p
+                            mesaaposta += p
                 input("Aperte ENTER para passar para o próximo jogador ")
                 limpar_tela()
                 fila.enqueue(jog)
+            if apostareal == 1:
+                mesaaposta *= 2
+                print(f"O pote de apostas dobrou para {mesaaposta} créditos!")
             fila.enqueue(fila.dequeue())
         print("\n" + "=" * 40)
         print("RESULTADO DA PARTIDA".center(40))
         print("=" * 40)
-        sobreviventes= {}
+        sobreviventes = {}
         for i in fila.items:
             mao = jogadores[i]["Mão"]
             pontos = 0
             for v, n in mao:
                 pontos += valores[v]
-            if pontos<=21:
-                sobreviventes[i]= pontos
+            if pontos <= 21:
+                sobreviventes[i] = pontos
                 print(f"Seu total de pontos {i}: {pontos}")
                 imgcarta(mao, naipes)
                 print("\n")
@@ -171,9 +141,9 @@ else:
             vencedores = []
             maior = max(sobreviventes.values())
             for nome, pnts in sobreviventes.items():
-                if pnts==maior:
+                if pnts == maior:
                     vencedores.append(nome)
-            if len(vencedores)>1:
+            if len(vencedores) > 1:
                 naipesvencedor = {}
                 for nome in vencedores:
                     contador = {}
@@ -188,7 +158,7 @@ else:
                 for nome, qntd in naipesvencedor.items():
                     if qntd == maior:
                         vencedores.append(nome)
-                if len(vencedores)>1:
+                if len(vencedores) > 1:
                     realeza = {}
                     for nome in vencedores:
                         peso = 0
@@ -196,7 +166,7 @@ else:
                             if v == "J":
                                 peso += 1
                             if v == "Q":
-                                peso +=2
+                                peso += 2
                             if v == "K":
                                 peso += 3
                         realeza[nome] = peso
@@ -205,7 +175,7 @@ else:
                     for nome, peso in realeza.items():
                         if peso == maior:
                             vencedores.append(nome)
-                    if len(vencedores)>1:
+                    if len(vencedores) > 1:
                         dupla = {}
                         for nome in vencedores:
                             valor = []
@@ -216,28 +186,28 @@ else:
                         maior = max(dupla.values())
                         vencedores = []
                         for nome, qntd in dupla.items():
-                            if qntd==maior:
+                            if qntd == maior:
                                 vencedores.append(nome)
-                        if len(vencedores)>1:
+                        if len(vencedores) > 1:
                             print("Como houve um empate definitivo, os créditos ficarão para nós o DGRV!")
-                            cassino += mesa
+                            cassino += (mesa + mesaaposta)
                         else:
-                            print(f"O vencedor {vencedores[0]} ganhou por pela soma das 2 menores cartas serem maiores!!")
+                            print(f"O vencedor {vencedores[0]} ganhou pela soma das 2 menores cartas ser maior!!")
                     else:
                         print(f"O vencedor {vencedores[0]} ganhou por ter a maior carta de realeza!!")
                 else:
                     print(f"O vencedor {vencedores[0]} ganhou por ter mais naipes iguais!!")
             if len(vencedores) == 1:
-                jogadores[vencedores[0]]["Créditos"] += mesa
+                jogadores[vencedores[0]]["Créditos"] += (mesa + mesaaposta)
                 print(f"O ganhador dessa partida foi {vencedores[0]}!!")
         else:
             print("Todos passaram de 21!")
-            cassino += mesa
+            cassino += (mesa + mesaaposta)
         print("Créditos de jogadores atualizados!!")
         for i in range(fila.size()):
             jog = fila.dequeue()
             print(f"{jog}: {jogadores[jog]['Créditos']} créditos")
-            if jogadores[jog]["Créditos"]>0:
+            if jogadores[jog]["Créditos"] > 0:
                 fila.enqueue(jog)
             else:
                 print(f"Jogador {jog} por falta de créditos foi eliminado!")
@@ -259,4 +229,4 @@ else:
     pos = 1
     for creditos, nome in ranking:
         print(f"{pos}° lugar: {nome} - {creditos} créditos")
-        pos += 1 
+        pos += 1
