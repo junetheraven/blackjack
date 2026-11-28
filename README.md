@@ -15,6 +15,7 @@ O **Cassino DGRV** é uma central de jogos de cassino modularizada. A aplicaçã
 | Roleta | Ricardo | Fila (`Queue`), tuplas, conjuntos (`set`) e listas |
 | Bac Bo | Davi | Fila (`Fila`), pilha (`Pilha`), tuplas, dicionários e listas |
 | Vini 1 | Vinícius | Fila (`Queue`), pilha (`Stack`), Max Heap, HeapSort, dicionários, tuplas e listas |
+| Lo-Hini | Vinícius | Fila (`Queue`), pilha (`Stack`), Max Heap, HeapSort, dicionários|
 
 ---
 
@@ -34,6 +35,10 @@ Jogo de dados inspirado no Bacará, no qual o jogador aposta no duelo entre **Pl
 
 ### 4. 🃏 Vini 1 — *Vinícius*
 Jogo de cartas em que os participantes trocam cartas para alcançar a maior pontuação possível sem ultrapassar 21, utilizando estratégias de descarte e desempate. 
+---
+
+### 5. 🔮 Lo-Hini — *Vinícius*
+Jogo de cartas inspirado em batata quente, no qual os participantes tentam prever se a próxima carta terá valor maior, menor ou igual à anterior, dobrando a aposta a cada acerto.
 ---
 
 ## 🧩 Hub Principal e Integração
